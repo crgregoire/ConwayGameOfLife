@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,17 +6,20 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- *
- * @author Locut
+ * The GameOfLifeGUI class. This is a graphical user driven program created to
+ * test my programming skills for a job opening.
+ * 
+ * @author Colin Gregoire
  */
 public class GameOfLifeGUI extends WindowAdapter {
 
+    //for randomization
     public static Random random = new Random();
 
-    // executor for updating our biosphere
+    // executor for updating our petriDish
     private static ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    // actual biosphere job / task
+    // actual petriDish job / task
     private Future<?> lifeFuture;
 
     // whether or not to keep running
@@ -30,7 +27,7 @@ public class GameOfLifeGUI extends WindowAdapter {
 
     private int size = 100;
 
-    private GameOfLifeCell[][] biosphere = new GameOfLifeCell[size][size];
+    private GameOfLifeCell[][] petriDish = new GameOfLifeCell[size][size];
 
     private JPanel lifePane;
 
@@ -64,10 +61,10 @@ public class GameOfLifeGUI extends WindowAdapter {
     
     protected JPanel createLifePane() {
         lifePane = new JPanel(new GridLayout(size, size, 2, 2));
-        // create and initialize the biosphere
+        // create and initialize the petriDish
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                biosphere[i][j] = new GameOfLifeCell(lifePane, i, j);
+                petriDish[i][j] = new GameOfLifeCell(lifePane, i, j);
             }
         }
         return lifePane;
@@ -94,6 +91,8 @@ public class GameOfLifeGUI extends WindowAdapter {
 
         });
         pane.add(startStopButton);
+        //I was going to add a next gen button, but it seems sort of
+        //pointless. It's more fun to just watch
 //        JButton nextGenButton = new JButton("Next Generation");
 //        nextGenButton.addActionListener(new ActionListener() {
 //
@@ -111,7 +110,7 @@ public class GameOfLifeGUI extends WindowAdapter {
                 // perform random routine
                 for (int i = 0; i < size; i++) {
                     for (int j = 0; j < size; j++) {
-                        biosphere[i][j].setAlive(random.nextBoolean());
+                        petriDish[i][j].setAlive(random.nextBoolean());
                     }
                 }
             }
@@ -125,7 +124,7 @@ public class GameOfLifeGUI extends WindowAdapter {
                 // perform the clear action
                 for (int i = 0; i < size; i++) {
                     for (int j = 0; j < size; j++) {
-                        biosphere[i][j].setAlive(false);
+                        petriDish[i][j].setAlive(false);
                     }
                 }
             }
@@ -159,36 +158,36 @@ public class GameOfLifeGUI extends WindowAdapter {
                                 int lft = (i > 0 ? i - 1 : size - 1);
                                 int rgt = (i < size - 1 ? i + 1 : 0);
                                 int neighbors = 0;
-                                if (biosphere[i][top].isLiving()) {
+                                if (petriDish[i][top].isLiving()) {
                                     neighbors++;
                                 }
-                                if (biosphere[i][btm].isLiving()) {
+                                if (petriDish[i][btm].isLiving()) {
                                     neighbors++;
                                 }
-                                if (biosphere[lft][top].isLiving()) {
+                                if (petriDish[lft][top].isLiving()) {
                                     neighbors++;
                                 }
-                                if (biosphere[lft][btm].isLiving()) {
+                                if (petriDish[lft][btm].isLiving()) {
                                     neighbors++;
                                 }
-                                if (biosphere[lft][j].isLiving()) {
+                                if (petriDish[lft][j].isLiving()) {
                                     neighbors++;
                                 }
-                                if (biosphere[rgt][j].isLiving()) {
+                                if (petriDish[rgt][j].isLiving()) {
                                     neighbors++;
                                 }
-                                if (biosphere[rgt][top].isLiving()) {
+                                if (petriDish[rgt][top].isLiving()) {
                                     neighbors++;
                                 }
-                                if (biosphere[rgt][btm].isLiving()) {
+                                if (petriDish[rgt][btm].isLiving()) {
                                     neighbors++;
                                 }
-                                living[i][j] = biosphere[i][j].isAlive(neighbors);
+                                living[i][j] = petriDish[i][j].isAlive(neighbors);
                             }
                         }
                         for (int i = 0; i < size; i++) {
                             for (int j = 0; j < size; j++) {
-                                biosphere[i][j].setAlive(living[i][j]);
+                                petriDish[i][j].setAlive(living[i][j]);
                             }
                         }
                         lifePane.repaint();
